@@ -54,13 +54,20 @@ const App = () => {
 
   const onTaskEdit = (task) => {
     const newTasksObject = { ...tasks };
-    newTasksObject[task.status] = tasks[task.status].map((t) => {
-      if (t.id === task.id) {
-        return task;
-      }
+    if (task.status === selectedTask.status) {
+      newTasksObject[task.status] = tasks[task.status].map((t) => {
+        if (t.id === task.id) {
+          return task;
+        }
 
-      return t;
-    });
+        return t;
+      });
+    } else {
+      newTasksObject[task.status].push(task);
+      newTasksObject[selectedTask.status] = tasks[selectedTask.status].filter(
+        (t) => t.id !== task.id
+      );
+    }
 
     setTasks(newTasksObject);
     saveTasksToLocalStorage(newTasksObject);

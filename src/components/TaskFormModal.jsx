@@ -76,6 +76,16 @@ const TaskFormModal = ({
   const editTask = (values) => {
     const startDate = values.startDate.format(dateFormat);
     const endDate = values.endDate.format(dateFormat);
+
+    const transformedAttachments = attachments
+      ? attachments.map((attachment) => {
+          return {
+            name: attachment.name,
+            url: URL.createObjectURL(attachment),
+          };
+        })
+      : [];
+
     const task = {
       id: selectedTask.id,
       title: values.title,
@@ -86,12 +96,7 @@ const TaskFormModal = ({
       status: values.status,
       assignedTo: values.assignedTo,
       subTasks: values.subTasks,
-      attachments: attachments.map((attachment) => {
-        return {
-          name: attachment.name,
-          url: URL.createObjectURL(attachment),
-        };
-      }),
+      attachments: transformedAttachments,
     };
 
     onTaskEdit(task);
